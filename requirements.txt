@@ -1,0 +1,10 @@
+fastapi 
+sqlalchemy 
+uvicorn
+pydantic
+pytest
+tensorflow
+opencv-python
+matplotlib
+pandas
+numpy  
