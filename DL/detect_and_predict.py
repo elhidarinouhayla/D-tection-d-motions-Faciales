@@ -1,33 +1,31 @@
 import cv2
 import os
 import tensorflow as tf
-import tf_keras as k3
+import tensorflow.keras 
 import matplotlib.pyplot as plt
 
-
-
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-
-image = cv2.imread(r"C:\Users\hp\Pictures\Screenshots\im.JPG")
+model = tensorflow.keras.models.load_model("DL/emotion_cnn_model.keras")
+classes_names = ('angry', 'disguasted', 'fearful', 'happy', 'neutral', 'sad', 'surprised')
+facecascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+image = cv2.imread("C:/Users/hp/Pictures/Screenshots/im.JPG")
+gris = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 print(image.shape)
-faces = face_cascade.detectMultiScale(image, scaleFactor=1.1, minNeighbors=5, minSize=(10, 10))
+
+faces = facecascade.detectMultiScale(image, scaleFactor=1.1, minNeighbors=5, minSize=(10, 10))
+if facecascade.empty()==True:
+    print("le fishier n'est pa charge:", facecascade.empty())
+else:
+    print("le fishier est charge")
+
+faces = facecascade.detectMultiScale(image, scaleFactor=1.1 , minNeighbors=5, minSize=(10,10)) 
 
 for (x, y, w, h) in faces:
     cv2.rectangle(image, (x, y), (x+w, y+h), (255, 0, 0), 2)
 
-plt.imshow(image, cmap='gray')
-plt.show()
 
-
-
-
-
-
-
-
-
-
-
+cv2.imwrite("new.JPG", image)
+# plt.imshow(image, cmap='gray')
+# plt.show()
 
 
 
