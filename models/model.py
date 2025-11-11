@@ -1,6 +1,7 @@
 from sqlalchemy import String, Column, Integer, Float, DateTime
 from database import Base
 from datetime import datetime
+from pydantic import BaseModel
 
 
 
@@ -12,4 +13,15 @@ class Person(Base):
     emotion = Column(String, nullable=False)
     confidence = Column(Float, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class PersonCreate(BaseModel):
+    emotion : str
+    confidence : float
+
+
+class PersonRespense(PersonCreate):
+    id : int
+    created_at : datetime
+
 
