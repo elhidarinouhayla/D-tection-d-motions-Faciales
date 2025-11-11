@@ -4,6 +4,7 @@ uvicorn
 pydantic
 pytest
 tensorflow
+tf_keras
 opencv-python
 matplotlib
 pandas
