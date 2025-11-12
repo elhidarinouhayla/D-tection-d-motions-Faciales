@@ -10,3 +10,4 @@ matplotlib
 pandas
 numpy 
 python-dotenv 
+psycopg2
