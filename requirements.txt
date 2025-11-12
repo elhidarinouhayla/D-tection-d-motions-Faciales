@@ -8,4 +8,5 @@ tf_keras
 opencv-python
 matplotlib
 pandas
-numpy  
+numpy 
+python-dotenv 
