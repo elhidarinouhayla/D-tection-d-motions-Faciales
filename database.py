@@ -1,19 +1,21 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base, text
+from sqlalchemy.orm import sessionmaker,declarative_base
+from sqlalchemy import text
+from secrets import USER, PASSWORD, HOST, PORT, DATABASE 
 
-# Definir les parametres de connexion 
-USER = "postgres"
-PASSWORD = "123456789"
-HOST = "localhost"
-PORT = "5432"
-DATABASE = "database"
+
 
 # Creer la base
-DATABASE_URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}"
+DATABASE_URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}"
 engine = create_engine(DATABASE_URL, isolation_level="AUTOCOMMIT")
+
 with engine.connect() as conn:
     conn.execute(text(f"CREATE DATABASE {DATABASE}"))
+    print('database created')
+
+# Connecter à la base:
+DATABASE_URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}"
+engine_ = create_engine(DATABASE_URL, isolation_level="AUTOCOMMIT")
 
 # Initialisation de SQLAlchemy et connexion à la base
 Base = declarative_base()
