@@ -1,6 +1,6 @@
 from sqlalchemy import String, Column, Integer, Float, DateTime
 from database import Base
-from datetime import datetime
+from datetime import datetime, timezone
 from pydantic import BaseModel
 
 
@@ -12,7 +12,9 @@ class Person(Base):
     id = Column(Integer, primary_key=True, index=True)
     emotion = Column(String, nullable=False)
     confidence = Column(Float, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
+    )
 
 
 class PersonCreate(BaseModel):
@@ -20,7 +22,7 @@ class PersonCreate(BaseModel):
     confidence : float
 
 
-class PersonRespense(PersonCreate):
+class PersonResponse(PersonCreate):
     id : int
     created_at : datetime
 
