@@ -1,9 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker,declarative_base
 from sqlalchemy import text
-from secrets import USER, PASSWORD, HOST, PORT, DATABASE 
-
-
+from config import USER, PASSWORD, HOST, PORT, DATABASE 
 
 # Creer la base
 DATABASE_URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}"
@@ -15,7 +13,7 @@ with engine.connect() as conn:
 
 # Connecter à la base:
 DATABASE_URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}"
-engine_ = create_engine(DATABASE_URL, isolation_level="AUTOCOMMIT")
+engine = create_engine(DATABASE_URL, isolation_level="AUTOCOMMIT")
 
 # Initialisation de SQLAlchemy et connexion à la base
 Base = declarative_base()
