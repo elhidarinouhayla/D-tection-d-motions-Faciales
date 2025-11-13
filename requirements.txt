@@ -11,3 +11,5 @@ pandas
 numpy 
 python-dotenv 
 psycopg2
+python-multipart
+aiofiles
