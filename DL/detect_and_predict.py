@@ -10,11 +10,12 @@ facecascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontal
 
 
 def emotion_detection(image_URL):
-    image = cv2.imread("image_URL")
+    image = cv2.imread(image_URL)
 
     gris = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     print(image.shape)
 
+    
     faces = facecascade.detectMultiScale(image, scaleFactor=1.1, minNeighbors=5, minSize=(10, 10))
     if facecascade.empty()==True:
         print("le fishier n'est pa charge:", facecascade.empty())
@@ -35,14 +36,14 @@ def emotion_detection(image_URL):
     emotion = classes_names[tf.argmax(prediction[0])]
     confidence = tf.reduce_max(prediction[0]) * 100 
 
-    text = f"{emotion} ({confidence:.2f}%)"
-    cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255,255,255), 2)
-    cv2.rectangle(image, (x, y), (x+w, y+h), (255, 0, 0), 2)
+    # text = f"{emotion} ({confidence:.2f}%)"
+    # cv2.putText(image, text, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255,255,255), 2)
+    # cv2.rectangle(image, (x, y), (x+w, y+h), (255, 0, 0), 2)
 
 
-    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    plt.imshow(image_rgb)
-    plt.axis('off')
-    plt.show()
+    # image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # plt.imshow(image_rgb)
+    # plt.axis('off')
+    # plt.show()
     return [emotion,confidence]
 
