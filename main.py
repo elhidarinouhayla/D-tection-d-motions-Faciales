@@ -18,7 +18,7 @@ async def predict_emotion(file: UploadFile = File(...), db: session = Depends(ge
     images_type = ["image/jpeg", "image/png", "image/jpg"]
 
     if file.content_type not in images_type:
-        raise HTTPException(status_code=400, detail="Only image files are allowed.")
+        raise HTTPException(status_code=400, detail="Seuls les fichiers image sont autorises")
 
     file_ext = file.filename.split(".")[-1]
     temp_filename = f"{uuid.uuid4()}.{file_ext}"
@@ -54,6 +54,9 @@ def predi(db: session = Depends(get_db)):
     return records
 
 
+@app.get("/")
+def Home():
+    return {"message": ""}
 
 
 
@@ -62,55 +65,6 @@ def predi(db: session = Depends(get_db)):
 
 
 
-#     if file.content_typenot not in ALLOWRD_TYPES:
-#         raise HTTPException(status_code=400, detail=f"type non autorise: (file.content_type)")
-    
-#     file_ext = file.filename.split(".")
-#     temp_filename = f"{uuid.uuid4()}.{file_ext}"
-#     with open (temp_filename, "wb") as buffer
-#     file.file.close()
-
-#     try:
-#         img= cv2
 
 
 
-
-
-
-
-
-#     #  Enregistrer l'image envoyée
-#     file_path = "DL/temp_image.png"
-#     with open(file_path, "wb") as f:
-#         f.write(await file.read())
-
-#     #  Lancer le script detect_and_predict.py
-#     result = subprocess.run(["python", "DL/detect_and_predict.py"], capture_output=True, text=True)
-
-#     #  Lire ce que le script a affiché
-#     output = result.stdout.strip()
-#     if not output:
-#         emotion, confidence = "unknown", 0.0
-#     else:
-#         emotion, confidence = output.split()
-#         confidence = float(confidence)
-
-#     # 4 Sauvegarder dans la base de données
-#     new_person = Person(
-#         emotion=emotion,
-#         confidence=confidence,
-#         created_at=datetime.utcnow()
-#     )
-#     db.add(new_person)
-#     db.commit()
-#     db.refresh(new_person)
-
-#     return new_person
-
-
-
-# @app.get("/history", response_model=PersonResponse)
-# def get_history(db: session = Depends(get_db)):
-#     records = db.query(Person).all()
-#     return records
