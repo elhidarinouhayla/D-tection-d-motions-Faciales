@@ -54,12 +54,9 @@ jobs:
           EOF
 
       # 6️⃣ Lancer pytest
+      # 6️⃣ Lancer pytest
       - name: Run tests
         env:
-          USER: postgres
-          PASSWORD: 123456789
-          HOST: localhost
-          PORT: 5432
-          DATABASE: emotion_data
+          TESTING: "1"   # <-- indique à database.py d'utiliser SQLite
         run: |
           pytest -v
