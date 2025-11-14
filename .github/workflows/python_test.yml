@@ -1,22 +1,43 @@
-name: run test
-on: [push]
+name: tests backend
+
+on:
+  push:
+    branches: [main]
 
 jobs:
-  test:
-    runs-on: windows-latest
+  build:
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Git clone
+      - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      
+      - name: Set up python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.10'
 
-      - name: Setup requirements
+      # Démarrer le PostgreSQL déjà installé dans GitHub Actions
+      - name: Start built-in PostgreSQL
+        env:
+          PASSWORD: 123456789
+          DATABASE: emotion_data
         run: |
-          python -m pip install --upgrade pip setuptools wheel
+          sudo systemctl start postgresql
+          sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '${PASSWORD}';"
+          sudo -u postgres psql -c "CREATE DATABASE \"${DATABASE}\";"
+
+      - name: Install python dependencies
+        run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run tests
-        run: pytest
+        env:
+          USER: postgres
+          PASSWORD: 123456789
+          HOST: localhost
+          PORT: 5432
+          DATABASE: emotion_data
+        run: |
+          pytest -v
