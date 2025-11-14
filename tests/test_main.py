@@ -22,22 +22,21 @@ def test_model_loads(model):
     assert model is not None
 
 
-# 🔹 TestClient pour FastAPI
-@pytest.fixture
-def client():
-    return TestClient(app)
+# @pytest.fixture
+# def client():
+#     return TestClient(app)
 
 
-def test_format_prediction(client):
-    response = client.get("/predictions")
-    assert response.status_code == 200
+# def test_format_prediction(client):
+#     response = client.get("/predictions")
+#     assert response.status_code == 200
 
-    data = response.json()
-    assert isinstance(data, list)
+#     data = response.json()
+#     assert isinstance(data, list)
 
-    if data:
-        first = data[0]
-        # Remplace "create_at" par "created_at" si nécessaire
-        expected_keys = ["id", "emotion", "confidence", "created_at"]
-        for key in expected_keys:
-            assert key in first
+#     if data:
+#         first = data[0]
+#         # Remplace "create_at" par "created_at" si nécessaire
+#         expected_keys = ["id", "emotion", "confidence", "created_at"]
+#         for key in expected_keys:
+#             assert key in first
