@@ -31,15 +31,29 @@ jobs:
           sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '${PASSWORD}';"
           sudo -u postgres psql -c "CREATE DATABASE \"${DATABASE}\";"
 
-      # 4️⃣ Installer les dépendances Python avec versions compatibles
+      # 4️⃣ Installer les dépendances
       - name: Install python dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install --upgrade numpy
           pip install -r requirements.txt
 
-      # 5️⃣ Lancer les tests via pytest
-      # ✅ Base de données et variables d’environnement passées aux tests
+      # 5️⃣ 📌 Créer les tables SQLAlchemy
+      - name: Create tables
+        env:
+          USER: postgres
+          PASSWORD: 123456789
+          HOST: localhost
+          PORT: 5432
+          DATABASE: emotion_data
+        run: |
+          python - << 'EOF'
+          from database import Base, engine
+          Base.metadata.create_all(bind=engine)
+          print("✅ Tables created successfully")
+          EOF
+
+      # 6️⃣ Lancer pytest
       - name: Run tests
         env:
           USER: postgres
