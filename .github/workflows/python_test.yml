@@ -11,17 +11,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Récupérer le code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Installer Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      # 3️⃣ Démarrer PostgreSQL intégré
       - name: Start PostgreSQL
         env:
           PASSWORD: 123456789
@@ -31,14 +28,13 @@ jobs:
           sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '${PASSWORD}';"
           sudo -u postgres psql -c "CREATE DATABASE \"${DATABASE}\";"
 
-      # 4️⃣ Installer les dépendances
+
       - name: Install python dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install --upgrade numpy
           pip install -r requirements.txt
 
-      # 5️⃣ 📌 Créer les tables SQLAlchemy
       - name: Create tables
         env:
           USER: postgres
@@ -53,8 +49,7 @@ jobs:
           print("✅ Tables created successfully")
           EOF
 
-      # 6️⃣ Lancer pytest
-      # 6️⃣ Lancer pytest
+     
       - name: Run tests
         env:
           TESTING: "1"   # <-- indique à database.py d'utiliser SQLite

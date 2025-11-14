@@ -10,7 +10,7 @@ import uuid, aiofiles
 
 app = FastAPI()
 
-# Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 
 @app.post("/predict_emotion")
@@ -34,8 +34,6 @@ async def predict_emotion(file: UploadFile = File(...), db: session = Depends(ge
     if hasattr(confidence, "numpy"):
         confidence = float(confidence.numpy())
 
-    # if emotion is None:
-    #     raise HTTPException(status_code=404, detail="Aucun visage detecte")
 
     new_entry = Person(
         emotion=emotion,
@@ -54,9 +52,6 @@ def predi(db: session = Depends(get_db)):
     return records
 
 
-@app.get("/")
-def Home():
-    return {"message": ""}
 
 
 

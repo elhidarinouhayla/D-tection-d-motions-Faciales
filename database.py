@@ -1,32 +1,29 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
-import os
-from config import USER, PASSWORD, HOST, PORT, DATABASE
+from sqlalchemy.orm import sessionmaker,declarative_base
+from sqlalchemy import text
+from config import USER, PASSWORD, HOST, PORT, DATABASE 
 
-# Mode test activé dans GitHub Actions
-TESTING = os.getenv("TESTING", "0") == "1"
+# Creer la base
+# DATABASE_URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}"
+# engine = create_engine(DATABASE_URL, isolation_level="AUTOCOMMIT")
 
-# Choix de la base selon le mode
-if TESTING:
-    print(">>> USING SQLITE TEST DATABASE <<<")
-    DATABASE_URL = "sqlite:///./test.db"
-else:
-    DATABASE_URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}"
+# with engine.connect() as conn:
+#     conn.execute(text(f"CREATE DATABASE {DATABASE}"))
+#     print('database created')
 
-# Création du moteur
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False} if TESTING else {},
-    isolation_level="AUTOCOMMIT" if not TESTING else None
-)
+# Connecter à la base:
+DATABASE_URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}"
+engine = create_engine(DATABASE_URL, isolation_level="AUTOCOMMIT")
 
-# Initialisation ORM
+# Initialisation de SQLAlchemy et connexion à la base
 Base = declarative_base()
-SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
+SessionLocal = sessionmaker(bind=engine)
+session = SessionLocal()
+
 
 
 def get_db():
-    db = SessionLocal()
+    db= SessionLocal()
     try:
         yield db
     finally:
