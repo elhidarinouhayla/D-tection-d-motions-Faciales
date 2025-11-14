@@ -3,13 +3,18 @@ import pytest
 import sys
 import os
 from fastapi.testclient import TestClient
+from database import Base,engine
 import numpy as np
 
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from main import app
 from DL.detect_and_predict import emotion_detection
-
+@pytest.fixture(scope="module", autouse=True)
+def setup_database():
+    Base.metadata.create_all(bind=engine)
+    yield
+    Base.metadata.drop_all(bind=engine)
 # Vérification du sauvegarde du modele 
 @pytest.fixture
 def model():
