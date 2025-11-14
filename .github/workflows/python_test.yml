@@ -1,18 +1,22 @@
 name: run test
 on: [push]
+
 jobs:
   test:
-      runs-on: windows-latest
-      steps:
-      - name: git clone
+    runs-on: windows-latest
+    steps:
+      - name: Git clone
         uses: actions/checkout@v4
-      - name: setup pythoj
-        uses: action/setup-python@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.11'
+
       - name: Setup requirements
-        run:|
+        run: |
           python -m pip install --upgrade pip
-          pip install -r requirement.txt
-      - name: setup tests
-      run: pytest
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest
